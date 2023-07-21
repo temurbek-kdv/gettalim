@@ -84,7 +84,7 @@ create table videos
 	updated_at timestamp without time zone default now()
 );
 
-create table what_you_learn
+create table course_benefits
 (
 	id bigint generated always as identity primary key,
 	name text not null,

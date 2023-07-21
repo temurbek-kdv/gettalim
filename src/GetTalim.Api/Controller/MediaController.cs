@@ -1,6 +1,5 @@
-﻿namespace GetTalim.Api.Controller
+﻿namespace GetTalim.Api.Controller;
+
+public class MediaController
 {
-    public class MediaController
-    {
-    }
 }

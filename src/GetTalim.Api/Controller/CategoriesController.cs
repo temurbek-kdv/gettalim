@@ -1,5 +1,4 @@
 ﻿using GetTalim.DataAccess.Utils;
-using GetTalim.Domain.Entities.Categoires;
 using GetTalim.Service.Dtos.Categories;
 using GetTalim.Service.Interfaces.Categories;
 using Microsoft.AspNetCore.Mvc;
@@ -21,27 +20,27 @@ public class CategoriesController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
-        =>Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
+        => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("{categoryId}")]
     public async Task<IActionResult> GetByIdAsync(long categoryId)
-        => Ok( await _service.GetByIdAsync(categoryId));
+        => Ok(await _service.GetByIdAsync(categoryId));
 
     [HttpGet("count")]
     public async Task<IActionResult> CountAsync()
-        =>Ok(await _service.CountAsync());
+        => Ok(await _service.CountAsync());
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CategoryCreateDto dto)
         => Ok(await _service.CreateAsync(dto));
 
-    
+
     [HttpPut("{categoryId}")]
-    public async Task<IActionResult> UpdateAsync (long categoryId, [FromForm] CategoryUpdateDto dto)
-        => Ok( await _service.UpdateAsync(categoryId,dto));
+    public async Task<IActionResult> UpdateAsync(long categoryId, [FromForm] CategoryUpdateDto dto)
+        => Ok(await _service.UpdateAsync(categoryId, dto));
 
     [HttpDelete("{categoryId}")]
     public async Task<IActionResult> DeleteAsync(long categoryId)
-        =>Ok(await _service.DeleteAsync(categoryId));
+        => Ok(await _service.DeleteAsync(categoryId));
 
 }

@@ -1,5 +1,10 @@
-﻿namespace GetTalim.DataAccess.Interfaces.Courses;
+﻿using GetTalim.DataAccess.Common.Interfaces;
+using GetTalim.Domain.Entities.Courses;
+using GetTalim.Domain.Entities.Students;
 
-public interface ICourseRepository
+namespace GetTalim.DataAccess.Interfaces.Courses;
+
+public interface ICourseRepository : IRepository<Course, Course>, IGetAll<Course>, ISearchAble<Course>
 {
+
 }
