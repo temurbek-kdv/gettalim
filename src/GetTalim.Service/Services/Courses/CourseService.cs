@@ -1,7 +1,6 @@
 ﻿using GetTalim.DataAccess.Interfaces.Courses;
 using GetTalim.DataAccess.Utils;
 using GetTalim.Domain.Entities.Courses;
-using GetTalim.Domain.Enums;
 using GetTalim.Domain.Exceptions.Courses;
 using GetTalim.Service.Common.Helpers;
 using GetTalim.Service.Dtos.Courses;
@@ -26,11 +25,11 @@ public class CourseService : ICourseService
     public async Task<bool> CreateAsync(CourseCreateDto dto)
     {
         string imagepath = await _fileService.UploadImageAsync(dto.Image);
-       
+
         Course course = new Course();
 
         course.Name = dto.Name;
-        course.Description = dto.Description;   
+        course.Description = dto.Description;
         course.Information = dto.Information;
         course.Price = dto.Price;
         course.DiscountPrice = dto.DiscountPrice;
@@ -39,13 +38,19 @@ public class CourseService : ICourseService
         course.MentorId = dto.MentorId;
         course.Level = dto.Level.ToString();
         course.Lessons = dto.Lessons;
-        course.Language = dto.Language.ToString()   ;
+        course.Language = dto.Language.ToString();
         course.Hours = dto.Hourse;
         course.CreatedAt = course.UpdatedAt = TimeHelper.GetDateTime();
-     
+
         var dbResult = await _repository.CreateAsync(course);
         return dbResult > 0;
 
+    }
+    public async Task<Course> GetByIdAsync(long courseId)
+    {
+        var courses = await _repository.GetByIdAsync(courseId);
+        if (courses is null) throw new CourseNotFoundException();
+        else return courses;
     }
 
     public async Task<bool> DeleteAsync(long courseId)
@@ -71,12 +76,6 @@ public class CourseService : ICourseService
         return courses;
     }
 
-    public async Task<Course> GetByIdAsync(long courseId)
-    {
-        var courses = await _repository.GetByIdAsync(courseId);
-        if (courses is null) throw new CourseNotFoundException();
-        else return courses;
-    }
 
 
     public async Task<bool> UpdateAsync(long courseId, CourseUpdateDto dto)
@@ -91,12 +90,12 @@ public class CourseService : ICourseService
         course.DiscountPrice = dto.DiscountPrice;
         course.CategoryId = dto.CategoryId;
         course.MentorId = dto.MentorId;
-        course.Level =dto.Level.ToString();
+        course.Level = dto.Level.ToString();
         course.Lessons = dto.Lessons;
-        course.Language =dto.Language.ToString();
+        course.Language = dto.Language.ToString();
         course.Hours = dto.Hourse;
         course.UpdatedAt = TimeHelper.GetDateTime();
-        
+
         if (dto.Image is not null)
         {
             await _fileService.DeleteImageAsync(course.ImagePath);

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using GetTalim.Service.Common.Helpers;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace GetTalim.Service.Services.Common;
@@ -18,9 +19,18 @@ public class FileService : IFileService
         ROOTHPATH = env.WebRootPath;
     }
 
-    public Task<bool> DeleteAvatarAsync(string subpath)
+    public async Task<bool> DeleteAvatarAsync(string subpath)
     {
-        throw new NotImplementedException();
+        string path = Path.Combine(ROOTHPATH, subpath);
+        if (File.Exists(path))
+        {
+            await Task.Run(() =>
+            {
+                File.Delete(path);
+            });
+            return true;
+        }
+        else return false;
     }
 
     public async Task<bool> DeleteImageAsync(string subpath)
@@ -37,9 +47,15 @@ public class FileService : IFileService
         else return false;
     }
 
-    public Task<string> UploadAvatarAsync(IFormFile avatar)
+    public async Task<string> UploadAvatarAsync(IFormFile avatar)
     {
-        throw new NotImplementedException();
+        string newImageName = MediaHelpers.MakeImageName(avatar.FileName);
+        string subPath = Path.Combine(MEDIA, AVATARS, newImageName);
+        string path = Path.Combine(ROOTHPATH, subPath);
+
+        var stream = new FileStream(path, FileMode.Create);
+        await avatar.CopyToAsync(stream);
+        return subPath;
     }
 
     public async Task<string> UploadImageAsync(IFormFile image)

@@ -22,14 +22,14 @@ public class CourseRequirmentsController : ControllerBase
         => Ok(await _service.GetAllAsync(new PaginationParams(page,maxRequirments)));
     
     [HttpGet("{requirmentId}")]
-    public async Task<IActionResult> GetByIdAsync(long id)
-        =>Ok(await _service.GetByIdAsync(id));
+    public async Task<IActionResult> GetByIdAsync(long requirmentId)
+        =>Ok(await _service.GetByIdAsync(requirmentId));
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CourseRequirmentCreateDto dto)
         =>Ok(await _service.CreateAsync(dto));
 
     [HttpDelete("{requirmentId}")]
-    public async Task<IActionResult> DeleteAsync(long id)
-        => Ok(await _service.DeleteAsync(id));
+    public async Task<IActionResult> DeleteAsync(long requirmentId)
+        => Ok(await _service.DeleteAsync(requirmentId));
 }

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Exceptions\Courses\NewFolder\" />
+    <Folder Include="Exceptions\NewFolder\" />
+  </ItemGroup>
+
 </Project>

@@ -21,8 +21,8 @@ public class CourseCommentsController : ControllerBase
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxComment)));
 
     [HttpGet("{commentId}")]
-    public async Task<IActionResult> GetByIdAsync(long id)
-        =>Ok(await _service.GetByIdAsync(id));
+    public async Task<IActionResult> GetByIdAsync(long commentId)
+        =>Ok(await _service.GetByIdAsync(commentId));
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CourseCommentCreateDto dto)
@@ -30,8 +30,8 @@ public class CourseCommentsController : ControllerBase
 
    
     [HttpDelete("{commentId}")]
-    public async Task<IActionResult> DeleteAsync(long id)
-        =>Ok(await _service.DeleteAsync(id));
+    public async Task<IActionResult> DeleteAsync(long commentId)
+        =>Ok(await _service.DeleteAsync(commentId));
 
 
 }

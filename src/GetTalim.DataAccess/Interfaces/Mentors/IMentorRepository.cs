@@ -1,5 +1,8 @@
-﻿namespace GetTalim.DataAccess.Interfaces.Mentors;
+﻿using GetTalim.DataAccess.Common.Interfaces;
+using GetTalim.Domain.Entities.Mentors;
 
-public interface IMentorRepository
+namespace GetTalim.DataAccess.Interfaces.Mentors;
+
+public interface IMentorRepository: IRepository<Mentor, Mentor>, IGetAll<Mentor>
 {
 }

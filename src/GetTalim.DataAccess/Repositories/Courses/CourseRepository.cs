@@ -57,7 +57,7 @@ public class CourseRepository : BaseRepository, ICourseRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "DELETE FROM public.courses WHERE id = @Id ;";
+            string query = "DELETE FROM courses WHERE id = @Id ;";
 
             var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
