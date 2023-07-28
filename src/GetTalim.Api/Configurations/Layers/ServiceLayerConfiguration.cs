@@ -39,6 +39,7 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<IAuthStudentService, AuthStudentService>();
         builder.Services.AddScoped<ITokenStudentService, TokenStudentService>();
         builder.Services.AddSingleton<IMailSender, MailSender>();
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
 
     }
 }

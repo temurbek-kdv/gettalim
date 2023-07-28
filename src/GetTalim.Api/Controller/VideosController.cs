@@ -1,7 +1,9 @@
 ﻿using GetTalim.DataAccess.Utils;
 using GetTalim.Service.Dtos.Videos;
 using GetTalim.Service.Interfaces.Videos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace GetTalim.Api.Controller;
 
@@ -26,18 +28,17 @@ public class VideosController : ControllerBase
         => Ok(await _service.GetByIdAsync(videoId));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] VideoCreateDto dto)
         => Ok(await _service.CreateAsync(dto));
 
     [HttpDelete("{videoId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long  videoId)
         => Ok(await _service.DeleteAsync(videoId));
 
     [HttpPut("{videoId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateAsync(long videoId, [FromForm] VideoUpdateDto dto)
         => Ok(await _service.UpdateAsync(videoId, dto));
-
-
-
-
 }

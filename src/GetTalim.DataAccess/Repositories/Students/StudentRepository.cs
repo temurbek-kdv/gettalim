@@ -15,8 +15,8 @@ public class StudentRepository:BaseRepository, IStudentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO students( first_name, last_name, is_male, email, email_confirmed, phone_number, image_path, password_hash, salt, created_at, updated_at) " +
-                "VALUES (@FirstName, @LastName, @IsMale, @Email, @IsEmailConfirmed, @PhoneNumber, @ImagePath, @PasswordHash, @Salt, @CreatedAt, @UpdatedAt); ";
+            string query = "INSERT INTO students( first_name, last_name, is_male, email, email_confirmed, phone_number, image_path, password_hash, salt, identity_role, created_at, updated_at) " +
+                "VALUES (@FirstName, @LastName, @IsMale, @Email, @IsEmailConfirmed, @PhoneNumber, @ImagePath, @PasswordHash, @Salt, @IdentityRole, @CreatedAt, @UpdatedAt); ";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
@@ -39,7 +39,7 @@ public class StudentRepository:BaseRepository, IStudentRepository
             string query = $"UPDATE students SET first_name=@FirstName, " +
                 $"last_name=@LastName, is_male=@IsMale, email=@Email, email_confirmed=IsEmailConfirmed, " +
                 $" phone_number=@PhoneNumber, image_path=@ImagePath, password_hash=@PasswordHash, " +
-                $" salt=@Salt, created_at=@CreatedAt, updated_at=@UpdateddAt WHERE id= {id}; ";
+                $" salt=@Salt, created_at=@CreatedAt, updated_at=@UpdateddAt WHERE id = {id}; ";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;

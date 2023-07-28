@@ -1,7 +1,9 @@
 ﻿using GetTalim.DataAccess.Utils;
 using GetTalim.Service.Dtos.CourseBenefits;
 using GetTalim.Service.Interfaces.CourseBenefits;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace GetTalim.Api.Controller;
 
@@ -26,10 +28,12 @@ public class CourseBenefitsController : ControllerBase
         => Ok(await _service.GetByIdAsync(coursebenefitId));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] CourseBenefitCreateDto dto)
         =>Ok(await _service.CreateAsync(dto));
 
     [HttpDelete("{coursebenefitId}")]
+    [Authorize(Roles = "Admin")]
     public async Task <IActionResult> DeleteAsync(long coursebenefitId)
         =>Ok( await _service.DeleteAsync(coursebenefitId));
 }

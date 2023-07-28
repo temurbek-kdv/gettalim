@@ -8,4 +8,5 @@ public interface IAuthStudentService
     public Task<(bool Result, int CashedVerificationMinutes)> SendCodeForRegisterAsync(string mail);
     public Task<(bool Result, string Token)> VerifyRegisterAsync(string mail, int code);
     public Task<(bool Result, string Token)> LoginAsync(StudentLoginDto loginDto);
+ 
 }

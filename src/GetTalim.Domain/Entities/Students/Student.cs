@@ -13,5 +13,5 @@ public class Student : Human
     public string ImagePath { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public string Salt { get; set; } = string.Empty;
-
+    public string IdentityRole { get; set; } = "Student";
 }

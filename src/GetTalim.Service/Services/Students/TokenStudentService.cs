@@ -24,6 +24,7 @@ public class TokenStudentService : ITokenStudentService
             new Claim("Id", student.Id.ToString()),
             new Claim("FirstName", student.FirstName),
             new Claim("LastName", student.LastName),
+            new Claim(ClaimTypes.Role, student.IdentityRole),
             new Claim(ClaimTypes.Email, student.Email)
         };
 

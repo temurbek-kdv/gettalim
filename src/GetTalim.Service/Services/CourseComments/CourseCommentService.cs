@@ -5,23 +5,26 @@ using GetTalim.Domain.Exceptions.Courses;
 using GetTalim.Service.Common.Helpers;
 using GetTalim.Service.Dtos.CourseComments;
 using GetTalim.Service.Interfaces.CourseComments;
+using GetTalim.Service.Interfaces.Students;
 
 namespace GetTalim.Service.Services.CourseComments;
 
 public class CourseCommentService : ICourseCommentService
 {
     private readonly ICourseCommentsRepository _repository;
+    private readonly IIdentityService _service;
 
-    public CourseCommentService(ICourseCommentsRepository repository)
+    public CourseCommentService(ICourseCommentsRepository repository, IIdentityService service)
     {
         this._repository = repository;
+        this._service = service;
     }
     public async Task<bool> CreateAsync(CourseCommentCreateDto dto)
     {
         CourseComment courseComment = new CourseComment();
 
         courseComment.Comment = dto.Comment;
-        courseComment.StudentId = dto.StudentId;
+        courseComment.StudentId = _service.UserId;
         courseComment.CourseId = dto.CourseId;
 
         courseComment.CreatedAt = courseComment.UpdatedAt = TimeHelper.GetDateTime();

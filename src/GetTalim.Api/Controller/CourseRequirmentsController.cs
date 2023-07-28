@@ -1,7 +1,9 @@
 ﻿using GetTalim.DataAccess.Utils;
 using GetTalim.Service.Dtos.CourseRequirments;
 using GetTalim.Service.Interfaces.CourseRequirments;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace GetTalim.Api.Controller;
 
@@ -26,10 +28,12 @@ public class CourseRequirmentsController : ControllerBase
         =>Ok(await _service.GetByIdAsync(requirmentId));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] CourseRequirmentCreateDto dto)
         =>Ok(await _service.CreateAsync(dto));
 
     [HttpDelete("{requirmentId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long requirmentId)
         => Ok(await _service.DeleteAsync(requirmentId));
 }

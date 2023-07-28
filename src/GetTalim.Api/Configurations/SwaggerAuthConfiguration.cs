@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace GetTalim.Api.Configurations;
+namespace GetTalim.WebApi.Configurations;
 
 public static class SwaggerAuthConfiguration
 {
@@ -10,8 +10,8 @@ public static class SwaggerAuthConfiguration
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Get Talim Api",
-                Version = "v1",
+                Title = "GetTalim Api",
+                Version = "v1"
             });
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -22,21 +22,18 @@ public static class SwaggerAuthConfiguration
                 Type = SecuritySchemeType.ApiKey
             });
 
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement {
             {
+                new OpenApiSecurityScheme
                 {
-                    new OpenApiSecurityScheme
+                    Reference = new OpenApiReference
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] {}
-                }
-            });
-
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }});
         });
     }
 }
