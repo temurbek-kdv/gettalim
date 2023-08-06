@@ -4,6 +4,7 @@ using GetTalim.DataAccess.Interfaces.CourseComments;
 using GetTalim.DataAccess.Interfaces.CourseModuls;
 using GetTalim.DataAccess.Interfaces.CourseRequierments;
 using GetTalim.DataAccess.Interfaces.Courses;
+using GetTalim.DataAccess.Interfaces.CourseViewModels;
 using GetTalim.DataAccess.Interfaces.Mentors;
 using GetTalim.DataAccess.Interfaces.Students;
 using GetTalim.DataAccess.Interfaces.Videos;
@@ -13,6 +14,7 @@ using GetTalim.DataAccess.Repositories.CourseComments;
 using GetTalim.DataAccess.Repositories.CourseModuls;
 using GetTalim.DataAccess.Repositories.CourseRequierments;
 using GetTalim.DataAccess.Repositories.Courses;
+using GetTalim.DataAccess.Repositories.CourseViewModels;
 using GetTalim.DataAccess.Repositories.Mentors;
 using GetTalim.DataAccess.Repositories.Students;
 using GetTalim.DataAccess.Repositories.Videos;
@@ -32,5 +34,6 @@ public static class DataAccessConfiguration
         builder.Services.AddScoped<IMentorRepository, MentorRepository>();
         builder.Services.AddScoped<IVideoRepository, VideoRepository>();
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+        builder.Services.AddScoped<ICourseViewModelRepository, CourseViewModelRepository>();
     }
 }

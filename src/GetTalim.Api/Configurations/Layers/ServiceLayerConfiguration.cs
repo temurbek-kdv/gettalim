@@ -5,6 +5,7 @@ using GetTalim.Service.Interfaces.CourseComments;
 using GetTalim.Service.Interfaces.CourseModuls;
 using GetTalim.Service.Interfaces.CourseRequirments;
 using GetTalim.Service.Interfaces.Courses;
+using GetTalim.Service.Interfaces.CourseViewModels;
 using GetTalim.Service.Interfaces.Mentors;
 using GetTalim.Service.Interfaces.Notifications;
 using GetTalim.Service.Interfaces.Students;
@@ -16,6 +17,7 @@ using GetTalim.Service.Services.CourseComments;
 using GetTalim.Service.Services.CourseModuls;
 using GetTalim.Service.Services.CourseRequirments;
 using GetTalim.Service.Services.Courses;
+using GetTalim.Service.Services.CourseViewModels;
 using GetTalim.Service.Services.Mentors;
 using GetTalim.Service.Services.Notifications;
 using GetTalim.Service.Services.Students;
@@ -40,6 +42,6 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<ITokenStudentService, TokenStudentService>();
         builder.Services.AddSingleton<IMailSender, MailSender>();
         builder.Services.AddScoped<IIdentityService, IdentityService>();
-
+        builder.Services.AddScoped<ICourseViewModelService, CourseViewModelService>();
     }
 }

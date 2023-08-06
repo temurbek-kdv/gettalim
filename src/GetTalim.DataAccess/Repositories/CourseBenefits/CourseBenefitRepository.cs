@@ -89,6 +89,7 @@ public class CourseBenefitRepository : BaseRepository, ICourseBenefitRepository
         }
     }
 
+
     public  Task<int> UpdateAsync(long id, CourseBenefit entity)
     {
         throw new NotImplementedException();
@@ -97,4 +98,25 @@ public class CourseBenefitRepository : BaseRepository, ICourseBenefitRepository
     {
         throw new NotImplementedException();
     }
+
+    public async Task<IList<CourseBenefit>> GetCourcseBenefitsAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM course_benefits WHERE course_id = @Id ";
+
+            var result = (await _connection.QueryAsync<CourseBenefit>(query, new {Id = id })).ToList();
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
 }

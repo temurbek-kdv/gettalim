@@ -1,8 +1,7 @@
-﻿using GetTalim.Service.Interfaces.Common;
-using Microsoft.AspNetCore.Http;
+﻿using GetTalim.Service.Common.Helpers;
+using GetTalim.Service.Interfaces.Common;
 using Microsoft.AspNetCore.Hosting;
-using GetTalim.Service.Common.Helpers;
-using static System.Net.Mime.MediaTypeNames;
+using Microsoft.AspNetCore.Http;
 
 
 namespace GetTalim.Service.Services.Common;
@@ -36,7 +35,7 @@ public class FileService : IFileService
     public async Task<bool> DeleteImageAsync(string subpath)
     {
         string path = Path.Combine(ROOTHPATH, subpath);
-        if(File.Exists(path))
+        if (File.Exists(path))
         {
             await Task.Run(() =>
             {

@@ -62,7 +62,7 @@ public class CourseRequirmentRepository : BaseRepository, ICourseRequiermentRepo
 
         try
         {
-            await _connection.OpenAsync();
+            await _connection.OpenAsync();  
             string query = "SELECT * FROM course_requirments ORDER BY id DESC ;";
 
             var result = (await _connection.QueryAsync<CourseRequirment>(query)).ToList();

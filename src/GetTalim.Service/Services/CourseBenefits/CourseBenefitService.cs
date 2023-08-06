@@ -45,6 +45,14 @@ public class CourseBenefitService : ICourseBenefitService
         return benefits;
     }
 
+    public async Task<IList<CourseBenefit>> GetCourcseBenefitsAsync(long Id)
+    {
+        var benefit = await _repository.GetCourcseBenefitsAsync(Id);
+        if (benefit is null) throw new CourseBenefitNotFoundException();
+
+        return benefit;
+    }
+
     public async Task<CourseBenefit> GetByIdAsync(long Id)
     {
         var benefit = await _repository.GetByIdAsync(Id);
@@ -61,4 +69,5 @@ public class CourseBenefitService : ICourseBenefitService
     {
         throw new NotImplementedException();
     }
+
 }

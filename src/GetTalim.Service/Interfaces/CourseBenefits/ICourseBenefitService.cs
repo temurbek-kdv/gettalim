@@ -12,4 +12,5 @@ public interface ICourseBenefitService
     public Task<IList<CourseBenefit>> GetAllAsync(PaginationParams @params);
     public Task<CourseBenefit> GetByIdAsync(long Id);
     public Task<bool> UpdateAsync(long Id, CourseBenefitCreateDto dto);
+    public Task<IList<CourseBenefit>> GetCourcseBenefitsAsync(long Id);
 }
