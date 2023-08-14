@@ -47,6 +47,13 @@ public class CourseRequirmentService : ICourseRequirmentService
          */
         return courseRequirment;
     }
+    public async Task<IList<CourseRequirment>> GetCourseRequirmentsAsync(long Id)
+    {
+        var coursrRequirment = await _repository.GetCourcseRequirmentsAsync(Id);
+        if (coursrRequirment.Count == 0) throw new CourseRequirmentsNotFoundException();
+
+        return coursrRequirment;
+    }
 
     public async Task<CourseRequirment> GetByIdAsync(long Id)
     {
@@ -55,5 +62,4 @@ public class CourseRequirmentService : ICourseRequirmentService
         else return courseRequirment;
     }
 
- 
 }

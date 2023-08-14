@@ -18,18 +18,18 @@ public class CourseBenefitsController : ControllerBase
         this._service = service;
     }
 
-    //[HttpGet]
-    //public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
-    //    => Ok(await _service.GetAllAsync(new PaginationParams(page, maxbenefit)));
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
+        => Ok(await _service.GetAllAsync(new PaginationParams(page, maxbenefit)));
 
 
-    //[HttpGet("{coursebenefitId}")]
-    //public async Task<IActionResult> GetByIdAsync(long coursebenefitId)
-    //    => Ok(await _service.GetByIdAsync(coursebenefitId));
-    
-    [HttpGet("{getallbenefit}")]
-    public async Task<IActionResult> GetCourcseBenefitsAsync(long getallbenefit)
-       => Ok(await _service.GetCourcseBenefitsAsync(getallbenefit));
+    [HttpGet("{coursebenefitId}")]
+    public async Task<IActionResult> GetByIdAsync(long coursebenefitId)
+        => Ok(await _service.GetByIdAsync(coursebenefitId));
+
+    [HttpGet("course/{courseId}")]
+    public async Task<IActionResult> GetCourcseBenefitsAsync(long courseId)
+       => Ok(await _service.GetCourcseBenefitsAsync(courseId));
 
     [HttpPost]
     [Authorize(Roles = "Admin")]

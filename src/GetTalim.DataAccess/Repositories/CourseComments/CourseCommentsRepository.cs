@@ -94,6 +94,26 @@ public class CourseCommentsRepository : BaseRepository, ICourseCommentsRepositor
         }
     }
 
+    public async Task<IList<CourseComment>> GetCourseComments(long id)
+    {
+        try
+        {
+            await  _connection.OpenAsync();
+            string query = "SELECT * FROM course_comments WHERE course_id = @Id";
+            var result = (await _connection.QueryAsync<CourseComment>(query, new { Id = id })).ToList();
+            
+            return result;
+        }
+        catch
+        {
+            return new List<CourseComment>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
     public async Task<int> UpdateAsync(long id, CourseComment entity)
     {
         try

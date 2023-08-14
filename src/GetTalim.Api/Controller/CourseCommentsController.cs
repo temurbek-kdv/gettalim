@@ -20,12 +20,19 @@ public class CourseCommentsController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxComment)));
 
     [HttpGet("{commentId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long commentId)
         =>Ok(await _service.GetByIdAsync(commentId));
+
+    [HttpGet("course/{id}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetCourseCommentsAsync(long id)
+        =>Ok(await _service.GetCourseCommentsAsync(id));
 
     [HttpPost]
     [Authorize(Roles = "Student")]

@@ -18,14 +18,21 @@ public class CourseRequirmentsController : ControllerBase
     {
         this._service = service;
     }
-    
+
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
-        => Ok(await _service.GetAllAsync(new PaginationParams(page,maxRequirments)));
-    
+        => Ok(await _service.GetAllAsync(new PaginationParams(page, maxRequirments)));
+
     [HttpGet("{requirmentId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long requirmentId)
-        =>Ok(await _service.GetByIdAsync(requirmentId));
+        => Ok(await _service.GetByIdAsync(requirmentId));
+
+    [HttpGet("course/{courseId}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetCourseRequirmentsAsync(long courseId)
+        => Ok(await _service.GetCourseRequirmentsAsync(courseId));
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
@@ -36,4 +43,5 @@ public class CourseRequirmentsController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long requirmentId)
         => Ok(await _service.DeleteAsync(requirmentId));
+
 }

@@ -83,7 +83,7 @@ public class CourseRequirmentRepository : BaseRepository, ICourseRequiermentRepo
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM course_comments WHERE id = @Id";
+            string query = "SELECT * FROM course_requirments WHERE id = @Id";
 
             var result = await _connection.QuerySingleAsync<CourseRequirment>(query, new { Id = id });
             return result;
@@ -91,6 +91,26 @@ public class CourseRequirmentRepository : BaseRepository, ICourseRequiermentRepo
         catch
         {
             return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<IList<CourseRequirment>> GetCourcseRequirmentsAsync(long id)
+    {
+       try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM course_requirments WHERE course_id = @Id";
+            var result = (await _connection.QueryAsync<CourseRequirment>(query, new {Id = id})).ToList();
+            
+            return result;
+        }
+        catch
+        {
+            return new List<CourseRequirment>();
         }
         finally
         {

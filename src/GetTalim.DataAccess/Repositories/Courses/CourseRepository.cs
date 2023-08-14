@@ -2,7 +2,6 @@
 using GetTalim.DataAccess.Interfaces.Courses;
 using GetTalim.DataAccess.Utils;
 using GetTalim.Domain.Entities.Courses;
-using System.Reflection.Metadata;
 
 namespace GetTalim.DataAccess.Repositories.Courses;
 
@@ -32,7 +31,7 @@ public class CourseRepository : BaseRepository, ICourseRepository
     {
         try
         {
-           
+
             await _connection.OpenAsync();
             string query = "INSERT INTO courses(name, description, information, lessons, " +
                 "hours, level, language, image_path, price, discount_price, mentor_id, category_id, created_at, updated_at)" +

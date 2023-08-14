@@ -43,6 +43,13 @@ public class CourseCommentService : ICourseCommentService
 
 
     }
+    public async Task<IList<CourseComment>> GetCourseCommentsAsync(long id)
+    {
+        var courseComment = await _repository.GetCourseComments(id);
+        if (courseComment.Count == 0) throw new CourseCommentNotFoundException();
+
+        return courseComment;
+    }
 
     public async Task<IList<CourseComment>> GetAllAsync(PaginationParams @params)
     {
