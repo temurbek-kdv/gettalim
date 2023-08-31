@@ -10,9 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
-builder.ConfigureJwtAuth();
-builder.ConfigureSwaggerAuth();
-//builder.ConfigureCORSPolicy();
+builder.ConfiguraWeb();
 builder.ConfigureDataAccess();
 builder.ConfigureServiceLayer();
 

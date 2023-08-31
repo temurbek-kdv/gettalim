@@ -1,4 +1,5 @@
-﻿using GetTalim.DataAccess.Interfaces.Categories;
+﻿using AutoMapper;
+using GetTalim.DataAccess.Interfaces.Categories;
 using GetTalim.DataAccess.Utils;
 using GetTalim.Domain.Entities.Categoires;
 using GetTalim.Domain.Exceptions.Categories;
@@ -11,23 +12,22 @@ namespace GetTalim.Service.Services.Categories;
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _repository;
+    private readonly IMapper _mapper;
 
-    public CategoryService(ICategoryRepository repository)
+    public CategoryService(ICategoryRepository repository, IMapper mapper)
     {
         this._repository = repository;
+        this._mapper = mapper;
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
 
     public async Task<bool> CreateAsync(CategoryCreateDto dto)
     {
-        Category category = new Category()
-        {
-            Name = dto.Name,
-            Description = dto.Description,
-            CreatedAt = TimeHelper.GetDateTime(),
-            UpdatedAt = TimeHelper.GetDateTime()
-        };
+        Category category = _mapper.Map<Category>(dto);
+        category.CreatedAt = TimeHelper.GetDateTime();
+        category.UpdatedAt = TimeHelper.GetDateTime();
+        
 
         var result = await _repository.CreateAsync(category);
         return result > 0;

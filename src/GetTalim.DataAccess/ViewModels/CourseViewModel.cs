@@ -1,4 +1,6 @@
-﻿namespace GetTalim.DataAccess.ViewModels;
+﻿using GetTalim.Domain.Entities.Courses;
+
+namespace GetTalim.DataAccess.ViewModels;
 
 public class CourseViewModel
 {
@@ -12,12 +14,13 @@ public class CourseViewModel
     public string Language { get; set; } = string.Empty;
     public string ImagePath { get; set; } = string.Empty;
     public double Price { get; set; }
-    public double Discount_price { get; set; }
-    public int MentorId { get; set; }
-    public int CategoryId { get; set; }
+    public double DiscountPrice { get; set; }
+    public long MentorId { get; set; }
+    public long CategoryId { get; set; }
+    public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public string Mentor { get; set; } = string.Empty;
-    public string Requirment { get; set; } = string.Empty;
-    public string Benefit { get; set; } = string.Empty;
+    public List<CourseBenefit> Benefits { get; set; } = new List<CourseBenefit>();
+    public List<CourseRequirment> Requirments { get; set; } = new List<CourseRequirment> { };
 
 }

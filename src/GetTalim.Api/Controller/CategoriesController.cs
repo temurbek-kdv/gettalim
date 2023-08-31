@@ -23,6 +23,7 @@ public class CategoriesController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
+
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
@@ -57,7 +58,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpDelete("{categoryId}")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long categoryId)
         => Ok(await _service.DeleteAsync(categoryId));
 

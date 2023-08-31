@@ -16,7 +16,8 @@ public class CourseViewModelController : ControllerBase
         this._service = service;
     }
     [HttpGet("{viewId}")]
+
     [AllowAnonymous]
     public async Task<IActionResult> GetCourseViewByIdAsync(long viewId)
-        => Ok(await _service.GetGetCourseViewByIdAsync(viewId));
+        => Ok(await _service.GetCourcseBenefitsAsync(viewId));
 }

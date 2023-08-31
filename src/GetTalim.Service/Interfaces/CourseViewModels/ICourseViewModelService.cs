@@ -1,9 +1,10 @@
-﻿using GetTalim.DataAccess.ViewModels;
-
+﻿
+using GetTalim.DataAccess.ViewModels;
 
 namespace GetTalim.Service.Interfaces.CourseViewModels;
 
 public interface ICourseViewModelService
 {
-    public Task<IList<CourseViewModel>> GetGetCourseViewByIdAsync(long Id);
+    public Task<CourseViewModel> GetCourcseBenefitsAsync(long Id);
+
 }

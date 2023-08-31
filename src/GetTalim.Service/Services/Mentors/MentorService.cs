@@ -1,4 +1,5 @@
-﻿using GetTalim.DataAccess.Interfaces.Mentors;
+﻿using AutoMapper;
+using GetTalim.DataAccess.Interfaces.Mentors;
 using GetTalim.DataAccess.Utils;
 using GetTalim.Domain.Entities.Mentors;
 using GetTalim.Domain.Exceptions.Mentors;
@@ -13,24 +14,21 @@ public class MentorService : IMentorService
 {
     private readonly IMentorRepository _repository;
     private readonly IFileService _fileservice;
+    private readonly IMapper _mapper;
 
     public MentorService(IMentorRepository repository, 
-        IFileService fileService)
+        IFileService fileService,
+        IMapper mapper)
     {
         this._repository = repository;
         this._fileservice = fileService;
+        this._mapper = mapper;
     }
 
     public async Task<bool> CreateAsync(MentorCreateDto dto)
     {
-        string imagePath = await _fileservice.UploadAvatarAsync(dto.Image);
-        Mentor mentor = new Mentor();
-
-        mentor.FirstName = dto.FirstName;
-        mentor.LastName = dto.LastName; 
-        mentor.Email = dto.Email;
-        mentor.Description = dto.Description;
-        mentor.ImagePath = imagePath;
+        Mentor mentor = _mapper.Map<Mentor>(dto);
+        mentor.ImagePath = await _fileservice.UploadAvatarAsync(dto.Image);
         mentor.CreatedAt = mentor.UpdatedAt = TimeHelper.GetDateTime();
         var  dbResult = await _repository.CreateAsync(mentor);
         return dbResult > 0;
