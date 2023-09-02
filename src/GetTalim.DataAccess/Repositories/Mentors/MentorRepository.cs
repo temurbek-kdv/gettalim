@@ -19,8 +19,8 @@ public class MentorRepository : BaseRepository, IMentorRepository
         {
             await _connection.OpenAsync();
             string query = "INSERT INTO mentors(first_name, last_name, image_path, " +
-                " description, email, created_at, updated_at) VALUES " +
-                " (@FirstName, @LastName, @ImagePath, @Description, @Email, @CreatedAt, @UpdatedAt) ; ";
+                " description, email, created_at, updated_at, stack) VALUES " +
+                " (@FirstName, @LastName, @ImagePath, @Description, @Email, @CreatedAt, @UpdatedAt, @Stack) ; ";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
@@ -102,7 +102,7 @@ public class MentorRepository : BaseRepository, IMentorRepository
             await _connection.OpenAsync();
             string query = "UPDATE mentors SET  first_name=@FirstName, last_name=@LastName, " +
                 " image_path=@ImagePath, description=@Description, email=@Email, " +
-                $" created_at=@CreatedAt, updated_at=@UpdatedAt WHERE id = {id} ; ";
+                $" created_at=@CreatedAt, updated_at=@UpdatedAt, stack=@Stack WHERE id = {id} ; ";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;

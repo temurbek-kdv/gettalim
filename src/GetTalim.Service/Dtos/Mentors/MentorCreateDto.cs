@@ -14,4 +14,6 @@ public class MentorCreateDto
     public IFormFile Image{ get; set; } = default!;
     public string Description { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public string Stack { get; set; } = string.Empty;
+
 }

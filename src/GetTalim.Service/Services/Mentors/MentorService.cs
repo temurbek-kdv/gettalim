@@ -69,7 +69,8 @@ public class MentorService : IMentorService
         mentor.LastName = dto.LastName;
         mentor.Email = dto.Email;
         mentor.Description = dto.Description;
-        mentor.CreatedAt = mentor.UpdatedAt = TimeHelper.GetDateTime();
+        mentor.Stack = dto.Stack;
+        mentor.UpdatedAt = TimeHelper.GetDateTime();
         if(dto.Image is not null)
         {
             await _fileservice.DeleteAvatarAsync(mentor.ImagePath);
