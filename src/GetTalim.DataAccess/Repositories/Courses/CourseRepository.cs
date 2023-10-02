@@ -76,7 +76,8 @@ public class CourseRepository : BaseRepository, ICourseRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM courses ORDER BY id desc ;";
+            string query = $"SELECT * FROM courses ORDER BY id DESC " +
+                $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
 
             var result = (await _connection.QueryAsync<Course>(query)).ToList();
             return result;

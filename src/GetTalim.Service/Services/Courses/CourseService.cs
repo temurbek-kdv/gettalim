@@ -12,13 +12,15 @@ namespace GetTalim.Service.Services.Courses;
 public class CourseService : ICourseService
 {
     private readonly ICourseRepository _repository;
+    private readonly IPaginatorService _paginator;
     private readonly IFileService _fileService;
 
     public CourseService(ICourseRepository courseRepository,
-        IFileService fileService)
+        IFileService fileService, IPaginatorService paginator)
     {
         this._fileService = fileService;
         this._repository = courseRepository;
+        _paginator = paginator;
     }
 
 
@@ -69,10 +71,9 @@ public class CourseService : ICourseService
     public async Task<IList<Course>> GetAllAsync(PaginationParams @params)
     {
         var courses = await _repository.GetAllAsync(@params);
-
-        /*
-            Pagination
-         */
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
+        
         return courses;
     }
 

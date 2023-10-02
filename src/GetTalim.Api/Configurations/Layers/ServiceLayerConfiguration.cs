@@ -43,5 +43,7 @@ public static class ServiceLayerConfiguration
         builder.Services.AddSingleton<IMailSender, MailSender>();
         builder.Services.AddScoped<IIdentityService, IdentityService>();
         builder.Services.AddScoped<ICourseViewModelService, CourseViewModelService>();
+        builder.Services.AddScoped<IPaginatorService, PaginatorService>();
+
     }
 }

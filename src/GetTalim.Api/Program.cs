@@ -32,6 +32,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 app.UseCors("MyPolicy");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseMiddleware<CrossOriginAccessMiddleware>();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
