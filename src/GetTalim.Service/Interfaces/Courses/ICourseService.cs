@@ -19,4 +19,6 @@ public interface ICourseService
     public Task<bool> UpdateAsync(long courseId, CourseUpdateDto dto);
 
     public Task<IList<Course>> GetCoursesByCategoryAsync(long categoryId, PaginationParams @params);
+    public Task<IList<Course>> GetSearchedCoursesNameAsync(string name, PaginationParams @params);
+
 }

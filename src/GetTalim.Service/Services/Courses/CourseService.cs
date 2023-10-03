@@ -119,4 +119,15 @@ public class CourseService : ICourseService
 
         return courses;
     }
+
+    public async Task<IList<Course>> GetSearchedCoursesNameAsync(string name, PaginationParams @params)
+    {
+        var intSearchedCourses = await _repository.CountSearchedCoursesNameAsync(name);
+        if (intSearchedCourses == 0) throw new CourseNotFoundException();
+
+        var courses = await _repository.GetSearchedCoursesNameAsync(name, @params);
+        _paginator.Paginate(intSearchedCourses, @params);
+
+        return courses;
+    }
 }

@@ -6,6 +6,8 @@ namespace GetTalim.DataAccess.Interfaces.Courses;
 
 public interface ICourseRepository : IRepository<Course, Course>, IGetAll<Course>, ISearchAble<Course>
 {
-    Task<List<Course>> GetCoursesByCategory(long categoryId, PaginationParams @params);
     Task<long> CountCourseByCategory(long categoryId);
+    Task<List<Course>> GetCoursesByCategory(long categoryId, PaginationParams @params);
+    Task<long> CountSearchedCoursesNameAsync(string name);
+    Task<List<Course>> GetSearchedCoursesNameAsync(string name, PaginationParams @params);
 }
