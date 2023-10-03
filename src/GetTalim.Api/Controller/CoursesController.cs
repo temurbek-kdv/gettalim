@@ -30,6 +30,13 @@ public class CoursesController : ControllerBase
         => Ok(await _service.GetByIdAsync(courseId));
 
 
+    [HttpGet("category/{categoryId}")]
+    public async Task<IActionResult> GetCoursesByCategoryAsync(long categoryId,[FromQuery] int page = 1)
+    {
+        return Ok(await _service.GetCoursesByCategoryAsync(categoryId, new PaginationParams(page, maxPageSize)));
+    }
+
+
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] CourseCreateDto dto)

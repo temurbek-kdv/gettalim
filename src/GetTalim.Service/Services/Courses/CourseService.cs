@@ -109,4 +109,14 @@ public class CourseService : ICourseService
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
 
+    public async Task<IList<Course>> GetCoursesByCategoryAsync(long categoryId, PaginationParams @params)
+    {
+        var CourseCount = await _repository.CountCourseByCategory(categoryId);
+        if(CourseCount == 0) throw new CourseNotFoundException();
+
+        var courses = await _repository.GetCoursesByCategory(categoryId, @params);
+        _paginator.Paginate(CourseCount, @params);
+
+        return courses;
+    }
 }
