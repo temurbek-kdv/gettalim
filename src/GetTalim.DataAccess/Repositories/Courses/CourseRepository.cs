@@ -1,7 +1,9 @@
 ﻿using Dapper;
 using GetTalim.DataAccess.Interfaces.Courses;
 using GetTalim.DataAccess.Utils;
+using GetTalim.Domain.Entities.Categoires;
 using GetTalim.Domain.Entities.Courses;
+using System.Xml.Linq;
 
 namespace GetTalim.DataAccess.Repositories.Courses;
 
@@ -179,4 +181,49 @@ public class CourseRepository : BaseRepository, ICourseRepository
             await _connection.CloseAsync();
         }
     }
+
+    public async Task<long> CountSearchedCoursesNameAsync(string name)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $" SELECT COUNT(*) FROM courses WHERE name ILIKE '%{name}%' ; ";
+
+            var result = await _connection.QuerySingleAsync<long>(query);
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<List<Course>> GetSearchedCoursesNameAsync(string name, PaginationParams @params)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $" SELECT * FROM courses WHERE name ILIKE '%{name}%' ORDER BY id DESC " +
+               
+                             $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
+
+            var result = (await _connection.QueryAsync<Course>(query)).ToList();
+            return result;
+        }
+        catch
+        {
+            return new List<Course>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+
+   
 }

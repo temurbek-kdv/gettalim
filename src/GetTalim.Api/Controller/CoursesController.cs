@@ -12,7 +12,7 @@ namespace GetTalim.Api.Controller;
 public class CoursesController : ControllerBase
 {
     private readonly ICourseService _service;
-    
+
     private readonly int maxPageSize = 20;
 
     public CoursesController(ICourseService courseService)
@@ -31,11 +31,17 @@ public class CoursesController : ControllerBase
 
 
     [HttpGet("category/{categoryId}")]
-    public async Task<IActionResult> GetCoursesByCategoryAsync(long categoryId,[FromQuery] int page = 1)
+    public async Task<IActionResult> GetCoursesByCategoryAsync(long categoryId, [FromQuery] int page = 1)
     {
         return Ok(await _service.GetCoursesByCategoryAsync(categoryId, new PaginationParams(page, maxPageSize)));
     }
 
+
+    [HttpGet("search/{search}")]
+    public async Task<IActionResult> GetSearchedCoursesNameAsync( string search, [FromQuery] int page = 1)
+    {
+        return Ok( await _service.GetSearchedCoursesNameAsync(search, new PaginationParams(page, maxPageSize)));
+    }
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
