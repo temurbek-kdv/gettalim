@@ -139,4 +139,44 @@ public class CourseRepository : BaseRepository, ICourseRepository
         throw new NotImplementedException();
     }
 
+    public async Task<List<Course>> GetCoursesByCategory(long categoryId, PaginationParams @params)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT * FROM courses WHERE category_id = {categoryId} ORDER BY id DESC " +
+                $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
+
+            var result = (await _connection.QueryAsync<Course>(query)).ToList();
+            return result;
+        }
+        catch
+        {
+            return new List<Course>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<long> CountCourseByCategory(long categoryId)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT count(*) FROM courses WHERE category_id = {categoryId} ; ";
+
+            var result = await _connection.QuerySingleAsync<long>(query);
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
 }
