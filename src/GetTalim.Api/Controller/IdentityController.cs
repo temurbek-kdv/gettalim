@@ -17,7 +17,7 @@ public class IdentityController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAsync()
     {
-        return Ok( new
+         return  Ok( new
         {
             _identity.FirstName,
             _identity.LastName,

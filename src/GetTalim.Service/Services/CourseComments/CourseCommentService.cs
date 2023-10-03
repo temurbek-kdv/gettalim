@@ -4,6 +4,7 @@ using GetTalim.Domain.Entities.Courses;
 using GetTalim.Domain.Exceptions.Courses;
 using GetTalim.Service.Common.Helpers;
 using GetTalim.Service.Dtos.CourseComments;
+using GetTalim.Service.Interfaces.Common;
 using GetTalim.Service.Interfaces.CourseComments;
 using GetTalim.Service.Interfaces.Students;
 
@@ -13,11 +14,14 @@ public class CourseCommentService : ICourseCommentService
 {
     private readonly ICourseCommentsRepository _repository;
     private readonly IIdentityService _service;
+    private readonly IPaginatorService _paginator;
 
-    public CourseCommentService(ICourseCommentsRepository repository, IIdentityService service)
+    public CourseCommentService(ICourseCommentsRepository repository, IIdentityService service,
+                                IPaginatorService paginator)
     {
         this._repository = repository;
         this._service = service;
+        _paginator = paginator;
     }
     public async Task<bool> CreateAsync(CourseCommentCreateDto dto)
     {
@@ -43,21 +47,25 @@ public class CourseCommentService : ICourseCommentService
 
 
     }
-    public async Task<IList<CourseComment>> GetCourseCommentsAsync(long id)
+    public async Task<IList<CourseComment>> GetCourseCommentsAsync(long id, PaginationParams @params)
     {
-        var courseComment = await _repository.GetCourseComments(id);
+        var courseComment = await _repository.GetCourseComments(id, @params);
         if (courseComment.Count == 0) throw new CourseCommentNotFoundException();
 
+        var count = await _repository.CountCourseCommentsAsync(id);
+        _paginator.Paginate(count, @params);
+        
         return courseComment;
+
     }
 
     public async Task<IList<CourseComment>> GetAllAsync(PaginationParams @params)
     {
         var courseComment = await _repository.GetAllAsync(@params);
 
-        /*
-            Pagination
-         */
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
+        
         return courseComment;
     }
 
