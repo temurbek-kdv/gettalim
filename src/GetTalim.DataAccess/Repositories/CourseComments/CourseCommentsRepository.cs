@@ -8,9 +8,44 @@ namespace GetTalim.DataAccess.Repositories.CourseComments;
 
 public class CourseCommentsRepository : BaseRepository, ICourseCommentsRepository
 {
-    public  Task<long> CountAsync()
+    public async  Task<long> CountAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT count(*) FROM courses ; ";
+
+            var result = await _connection.QuerySingleAsync<long>(query);
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<long> CountCourseCommentsAsync(long courseId)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT COUNT(*) FROM course_comments WHERE course_id = {courseId}";
+
+            var result = await _connection.QuerySingleAsync<long>(query);
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<int> CreateAsync(CourseComment entity)
@@ -94,12 +129,14 @@ public class CourseCommentsRepository : BaseRepository, ICourseCommentsRepositor
         }
     }
 
-    public async Task<IList<CourseComment>> GetCourseComments(long id)
+    public async Task<IList<CourseComment>> GetCourseComments(long id, PaginationParams @params)
     {
         try
         {
             await  _connection.OpenAsync();
-            string query = "SELECT * FROM course_comments WHERE course_id = @Id";
+            string query = "SELECT * FROM course_comments WHERE course_id = @Id " +
+               $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
+
             var result = (await _connection.QueryAsync<CourseComment>(query, new { Id = id })).ToList();
             
             return result;
