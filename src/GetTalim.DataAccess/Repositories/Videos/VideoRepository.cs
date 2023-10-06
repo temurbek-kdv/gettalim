@@ -128,4 +128,47 @@ public class VideoRepository : BaseRepository, IVideoRepository
             await _connection.CloseAsync();
         }
     }
+
+    public async Task<IList<Video>> GetVideoByModuleIdAsync(long moduleId)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT * FROM videos WHERE course_modul_id = {moduleId}";
+
+            var result = await _connection.QueryAsync<Video>(query);
+            
+            return result.ToList();
+        }
+        catch
+        {
+            return new List<Video>();   
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<IList<VideoWithoutPath>> GetVideoForCommonAsync(long moduleId)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT id, name, length, course_modul_id, created_at, updated_at " +
+                $" FROM videos WHERE course_modul_id = {moduleId}";
+
+            var result = await _connection.QueryAsync<VideoWithoutPath>(query);
+
+            return result.ToList();
+        }
+        catch
+        {
+            return new List<VideoWithoutPath>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
 }

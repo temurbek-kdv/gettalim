@@ -1,7 +1,9 @@
 ﻿using GetTalim.DataAccess.Interfaces.CourseModuls;
-using GetTalim.DataAccess.Interfaces.Courses;
+using GetTalim.DataAccess.Interfaces.Videos;
 using GetTalim.DataAccess.Utils;
+using GetTalim.DataAccess.ViewModels;
 using GetTalim.Domain.Entities.Courses;
+using GetTalim.Domain.Entities.Videos;
 using GetTalim.Domain.Exceptions.Courses;
 using GetTalim.Service.Common.Helpers;
 using GetTalim.Service.Dtos.CourseModuls;
@@ -12,14 +14,16 @@ namespace GetTalim.Service.Services.CourseModuls;
 public class CourseModulService : ICourseModulService
 {
     private readonly ICourseModulRepository _repository;
+    private readonly IVideoRepository _videoRepository;
 
-    public CourseModulService(ICourseModulRepository repository)
+    public CourseModulService(ICourseModulRepository repository, IVideoRepository videoRepository)
     {
         this._repository = repository;
+        _videoRepository = videoRepository;
     }
     public async Task<bool> CreateAsync(CourseModulCreateDto dto)
     {
-        CourseModul modul  = new CourseModul();
+        CourseModul modul = new CourseModul();
         modul.Name = dto.Name;
         modul.CourseId = dto.CourseId;
 
@@ -60,5 +64,51 @@ public class CourseModulService : ICourseModulService
 
         var dbResult = await _repository.UpdateAsync(modulId, modul);
         return dbResult > 0;
+    }
+
+    public async Task<IList<ModulwithVideosViewModel>> GetModulVideosAsync(long courseId)
+    {
+        List<ModulwithVideosViewModel> listModul = new List<ModulwithVideosViewModel>();
+
+
+        var modules = await _repository.GetByCourseIdAsync(courseId);
+            ModulwithVideosViewModel modulwithVideosViewModel = new ModulwithVideosViewModel();
+        foreach (var modul in modules)
+        {
+            modulwithVideosViewModel.Name = modul.Name;
+            modulwithVideosViewModel.CourseId = modul.CourseId;
+            modulwithVideosViewModel.UpdatedAt = modul.UpdatedAt;
+            modulwithVideosViewModel.CreatedAt = modul.CreatedAt;
+            modulwithVideosViewModel.Id = modul.Id;
+            var videos = await _videoRepository.GetVideoByModuleIdAsync(modul.Id);
+            if (videos is not  null) 
+                modulwithVideosViewModel.Videos.AddRange(videos);
+            listModul.Add(modulwithVideosViewModel);
+        }
+
+        return listModul;
+    }
+
+    public async Task<IList<ModulVideosWithoutPathViewModel>> GetModulVideosCommonAsync(long courseId)
+    {
+        List<ModulVideosWithoutPathViewModel> listModul = new List<ModulVideosWithoutPathViewModel>();
+        var modules = await _repository.GetByCourseIdAsync(courseId);
+        
+        ModulVideosWithoutPathViewModel modulwithVideosViewModel = new ModulVideosWithoutPathViewModel();
+
+        foreach (var modul in modules)
+        {
+            modulwithVideosViewModel.Name = modul.Name;
+            modulwithVideosViewModel.CourseId = modul.CourseId;
+            modulwithVideosViewModel.UpdatedAt = modul.UpdatedAt;
+            modulwithVideosViewModel.CreatedAt = modul.CreatedAt;
+            modulwithVideosViewModel.Id = modul.Id;
+            var videos = await _videoRepository.GetVideoForCommonAsync(modul.Id);
+            if (videos is not null)
+                modulwithVideosViewModel.videos.AddRange(videos);
+            listModul.Add(modulwithVideosViewModel);
+        }
+
+        return listModul;
     }
 }

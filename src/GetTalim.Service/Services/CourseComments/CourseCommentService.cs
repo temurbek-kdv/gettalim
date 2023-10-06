@@ -13,14 +13,14 @@ namespace GetTalim.Service.Services.CourseComments;
 public class CourseCommentService : ICourseCommentService
 {
     private readonly ICourseCommentsRepository _repository;
-    private readonly IIdentityService _service;
+    private readonly IIdentityService _identityService;
     private readonly IPaginatorService _paginator;
 
     public CourseCommentService(ICourseCommentsRepository repository, IIdentityService service,
                                 IPaginatorService paginator)
     {
         this._repository = repository;
-        this._service = service;
+        this._identityService = service;
         _paginator = paginator;
     }
     public async Task<bool> CreateAsync(CourseCommentCreateDto dto)
@@ -28,7 +28,7 @@ public class CourseCommentService : ICourseCommentService
         CourseComment courseComment = new CourseComment();
 
         courseComment.Comment = dto.Comment;
-        courseComment.StudentId = _service.UserId;
+        courseComment.StudentId = _identityService.UserId;
         courseComment.CourseId = dto.CourseId;
 
         courseComment.CreatedAt = courseComment.UpdatedAt = TimeHelper.GetDateTime();
@@ -41,7 +41,9 @@ public class CourseCommentService : ICourseCommentService
     {
         var courseComment = await _repository.GetByIdAsync(courseCommentId);
         if (courseComment is null) throw new CourseCommentNotFoundException();
-
+        if(courseComment.StudentId != _identityService.UserId)
+            throw new UnauthorizedAccessException();
+        
         var dbResult = await _repository.DeleteAsync(courseCommentId);
         return dbResult > 0;
 

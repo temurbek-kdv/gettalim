@@ -207,7 +207,7 @@ public class CourseRepository : BaseRepository, ICourseRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $" SELECT * FROM courses WHERE name ILIKE '%{name}%' ORDER BY id DESC " +
+            string query = @$" SELECT * FROM courses WHERE name ILIKE '%{name}%' ORDER BY id DESC " +
                
                              $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
 

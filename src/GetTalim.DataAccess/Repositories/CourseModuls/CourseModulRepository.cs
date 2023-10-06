@@ -113,4 +113,25 @@ public class CourseModulRepository : BaseRepository, ICourseModulRepository
             await _connection.CloseAsync();
         }
     }
+
+    public async Task<IList<CourseModul>> GetByCourseIdAsync(long courseId)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $" SELECT * FROM course_moduls where course_id = {courseId} ";
+
+            var result = await _connection.QueryAsync<CourseModul>(query);
+            
+            return result.ToList();
+        }
+        catch
+        {
+            return new List<CourseModul>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
 }

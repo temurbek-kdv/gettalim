@@ -41,4 +41,19 @@ public class CourseModulsController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long modulId)
         => Ok(await _service.DeleteAsync(modulId));
+
+
+    [HttpGet("videos/student/{courseId}")]
+    [Authorize(Roles = "Student, Admin")]
+    public async Task<IActionResult> GetModulVideosAsync(long courseId)
+    {
+        return Ok(await _service.GetModulVideosAsync(courseId));
+    }
+
+
+    [HttpGet("videos/common/{courseId}")]
+    public async Task<IActionResult> GetVideoForCommonAsync(long courseId)
+    {
+        return Ok(await _service.GetModulVideosCommonAsync(courseId));
+    }
 }

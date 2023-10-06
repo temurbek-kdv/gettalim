@@ -122,6 +122,10 @@ public class CourseService : ICourseService
 
     public async Task<IList<Course>> GetSearchedCoursesNameAsync(string name, PaginationParams @params)
     {
+        if(name.Contains("'"))
+        {
+            name = name.Replace("'", "''");
+        }
         var intSearchedCourses = await _repository.CountSearchedCoursesNameAsync(name);
         if (intSearchedCourses == 0) throw new CourseNotFoundException();
 

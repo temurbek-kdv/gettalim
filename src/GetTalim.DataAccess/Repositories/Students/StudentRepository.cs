@@ -8,7 +8,7 @@ using GetTalim.Domain.Entities.Students;
 
 namespace GetTalim.DataAccess.Repositories.Students;
 
-public class StudentRepository:BaseRepository, IStudentRepository
+public class StudentRepository : BaseRepository, IStudentRepository
 {
     public async Task<int> CreateAsync(Student entity)
     {
@@ -25,7 +25,7 @@ public class StudentRepository:BaseRepository, IStudentRepository
         {
             return 0;
         }
-        finally 
+        finally
         {
             await _connection.CloseAsync();
         }
@@ -48,9 +48,9 @@ public class StudentRepository:BaseRepository, IStudentRepository
         {
             return 0;
         }
-        finally 
-        { 
-            await _connection.CloseAsync(); 
+        finally
+        {
+            await _connection.CloseAsync();
         }
     }
 
@@ -61,7 +61,7 @@ public class StudentRepository:BaseRepository, IStudentRepository
             await _connection.OpenAsync();
             string query = "DELETE FROM students WHERE id = @Id;";
 
-            var result = await _connection.ExecuteAsync(query, new {Id = id});
+            var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
         }
         catch
@@ -81,15 +81,15 @@ public class StudentRepository:BaseRepository, IStudentRepository
             await _connection.OpenAsync();
             string query = "SELECT *  FROM students WHERE id = @Id ;";
 
-            var result = await _connection.QuerySingleAsync<Student>(query, new { Id = id});
+            var result = await _connection.QuerySingleAsync<Student>(query, new { Id = id });
             return result;
         }
         catch
-        { 
+        {
             return null;
         }
-        finally 
-        { 
+        finally
+        {
             await _connection.CloseAsync();
         }
 
@@ -102,7 +102,7 @@ public class StudentRepository:BaseRepository, IStudentRepository
             await _connection.OpenAsync();
             string query = "SELECT count(*) FROM students ;";
 
-            var result =  await _connection.QuerySingleAsync<long>(query);
+            var result = await _connection.QuerySingleAsync<long>(query);
 
             return result;
         }
@@ -112,9 +112,9 @@ public class StudentRepository:BaseRepository, IStudentRepository
         }
         finally
         {
-            await _connection.CloseAsync() ;
+            await _connection.CloseAsync();
         }
-        
+
     }
 
     public async Task<IList<Student>> GetAllAsync(PaginationParams @params)
@@ -125,7 +125,7 @@ public class StudentRepository:BaseRepository, IStudentRepository
             string query = "SELECT * FROM students ORDER BY id DESC ;";
 
             var result = (await _connection.QueryAsync<Student>(query)).ToList();
-            return result; 
+            return result;
         }
         catch
         {
@@ -144,7 +144,7 @@ public class StudentRepository:BaseRepository, IStudentRepository
             await _connection.OpenAsync();
             string query = "SELECT * FROM students where email = @Email ";
 
-            var data = await _connection.QuerySingleAsync<Student>(query, new {Email = email});
+            var data = await _connection.QuerySingleAsync<Student>(query, new { Email = email });
             return data;
         }
         catch
@@ -157,33 +157,39 @@ public class StudentRepository:BaseRepository, IStudentRepository
         }
     }
 
-    async Task<StudentViewModel?>  IRepository<Student, StudentViewModel>.GetByIdAsync(long id)
-    {
-        try
-        {
-            await _connection.OpenAsync();
-            string query = "SELECT *  FROM students WHERE id = @Id ;";
-
-            var result = await _connection.QuerySingleAsync<StudentViewModel>(query, new { Id = id });
-            return result;
-        }
-        catch
-        {
-            return null;
-        }
-        finally
-        {
-            await _connection.CloseAsync();
-        }
-    }
-
-    Task<IList<StudentViewModel>> IGetAll<StudentViewModel>.GetAllAsync(PaginationParams @params)
-    {
-        throw new NotImplementedException();
-    }
+    //Task<IList<StudentViewModel>> IGetAll<StudentViewModel>.GetAllAsync(PaginationParams @params)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
     public Task<(int ItemsCount, IList<StudentViewModel>)> SearchAsync(string search, PaginationParams @params)
     {
         throw new NotImplementedException();
     }
+
+
+
+    //async Task<StudentViewModel?>  IRepository<Student, StudentViewModel>.GetByIdAsync(long id)
+    //{
+    //    try
+    //    {
+    //        await _connection.OpenAsync();
+    //        string query = "SELECT *  FROM students WHERE id = @Id ;";
+
+    //        var result = await _connection.QuerySingleAsync<StudentViewModel>(query, new { Id = id });
+    //        return result;
+    //    }
+    //    catch
+    //    {
+    //        return null;
+    //    }
+    //    finally
+    //    {
+    //        await _connection.CloseAsync();
+    //    }
+    //}
+
+
+
+
 }
