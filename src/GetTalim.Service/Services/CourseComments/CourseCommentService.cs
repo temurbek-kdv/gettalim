@@ -19,8 +19,8 @@ public class CourseCommentService : ICourseCommentService
     public CourseCommentService(ICourseCommentsRepository repository, IIdentityService service,
                                 IPaginatorService paginator)
     {
-        this._repository = repository;
-        this._identityService = service;
+        _repository = repository;
+        _identityService = service;
         _paginator = paginator;
     }
     public async Task<bool> CreateAsync(CourseCommentCreateDto dto)
@@ -41,14 +41,15 @@ public class CourseCommentService : ICourseCommentService
     {
         var courseComment = await _repository.GetByIdAsync(courseCommentId);
         if (courseComment is null) throw new CourseCommentNotFoundException();
+        
         if(courseComment.StudentId != _identityService.UserId)
             throw new UnauthorizedAccessException();
         
         var dbResult = await _repository.DeleteAsync(courseCommentId);
         return dbResult > 0;
-
-
     }
+
+
     public async Task<IList<CourseComment>> GetCourseCommentsAsync(long id, PaginationParams @params)
     {
         var courseComment = await _repository.GetCourseComments(id, @params);
@@ -88,4 +89,12 @@ public class CourseCommentService : ICourseCommentService
         throw new NotImplementedException();
     }
 
+    public async Task<bool> DeleteAdminAsync(long courseCommentId)
+    {
+        var courseComment = await _repository.GetByIdAsync(courseCommentId);
+        if (courseComment is null) throw new CourseCommentNotFoundException();
+
+        var dbResult = await _repository.DeleteAsync(courseCommentId);
+        return dbResult > 0;
+    }
 }

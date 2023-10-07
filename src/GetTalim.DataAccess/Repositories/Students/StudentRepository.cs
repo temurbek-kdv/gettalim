@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using GetTalim.DataAccess.Common.Interfaces;
-using GetTalim.DataAccess.Interfaces;
 using GetTalim.DataAccess.Interfaces.Students;
 using GetTalim.DataAccess.Utils;
 using GetTalim.DataAccess.ViewModels;
@@ -37,9 +35,9 @@ public class StudentRepository : BaseRepository, IStudentRepository
         {
             await _connection.OpenAsync();
             string query = $"UPDATE students SET first_name=@FirstName, " +
-                $"last_name=@LastName, is_male=@IsMale, email=@Email, email_confirmed=IsEmailConfirmed, " +
-                $" phone_number=@PhoneNumber, image_path=@ImagePath, password_hash=@PasswordHash, " +
-                $" salt=@Salt, created_at=@CreatedAt, updated_at=@UpdateddAt WHERE id = {id}; ";
+                $" last_name=@LastName, is_male=@IsMale, " +
+                $" phone_number=@PhoneNumber, image_path=@ImagePath,  " +
+                $" updated_at=@UpdatedAt WHERE id = {id} ; ";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
@@ -117,19 +115,22 @@ public class StudentRepository : BaseRepository, IStudentRepository
 
     }
 
-    public async Task<IList<Student>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<StudentViewModel>> GetAllStudentsAsync(PaginationParams @params)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM students ORDER BY id DESC ;";
+            string query = "SELECT id, first_name, last_name, is_male, email, phone_number, image_path," +
+                "  created_at, updated_at FROM public.students ORDER BY id DESC " +
+                         $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
 
-            var result = (await _connection.QueryAsync<Student>(query)).ToList();
+            var result = (await _connection.QueryAsync<StudentViewModel>(query)).ToList();
+
             return result;
         }
         catch
         {
-            return new List<Student>();
+            return new List<StudentViewModel>();
         }
         finally
         {
@@ -157,39 +158,53 @@ public class StudentRepository : BaseRepository, IStudentRepository
         }
     }
 
-    //Task<IList<StudentViewModel>> IGetAll<StudentViewModel>.GetAllAsync(PaginationParams @params)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-    public Task<(int ItemsCount, IList<StudentViewModel>)> SearchAsync(string search, PaginationParams @params)
+    public async Task<IList<StudentViewModel>> SearchStudentNameAsync(string name, PaginationParams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT id, first_name, last_name, is_male, email, phone_number, image_path," +
+            "  created_at, updated_at FROM public.students " +
+            $" WHERE first_name ILIKE '%{name}%' OR last_name ILIKE '%{name}%'  ORDER BY id DESC " +
+                     $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
+
+            var result = (await _connection.QueryAsync<StudentViewModel>(query)).ToList();
+
+            return result;
+        }
+        catch
+        {
+            return new List<StudentViewModel>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
+    public async Task<IList<StudentViewModel>> SearchStudentMailAsync(string mail, PaginationParams @params)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT id, first_name, last_name, is_male, email, phone_number, image_path," +
+            "  created_at, updated_at FROM public.students " +
+            $" WHERE email ILIKE '%{mail}%'  ORDER BY id DESC " +
+                     $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
 
+            var result = (await _connection.QueryAsync<StudentViewModel>(query)).ToList();
 
-    //async Task<StudentViewModel?>  IRepository<Student, StudentViewModel>.GetByIdAsync(long id)
-    //{
-    //    try
-    //    {
-    //        await _connection.OpenAsync();
-    //        string query = "SELECT *  FROM students WHERE id = @Id ;";
-
-    //        var result = await _connection.QuerySingleAsync<StudentViewModel>(query, new { Id = id });
-    //        return result;
-    //    }
-    //    catch
-    //    {
-    //        return null;
-    //    }
-    //    finally
-    //    {
-    //        await _connection.CloseAsync();
-    //    }
-    //}
-
-
+            return result;
+        }
+        catch
+        {
+            return new List<StudentViewModel>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
 
 
 }

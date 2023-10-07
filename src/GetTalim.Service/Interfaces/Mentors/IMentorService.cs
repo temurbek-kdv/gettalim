@@ -1,4 +1,5 @@
 ﻿using GetTalim.DataAccess.Utils;
+using GetTalim.Domain.Entities.Courses;
 using GetTalim.Domain.Entities.Mentors;
 using GetTalim.Service.Dtos.Mentors;
 
@@ -12,4 +13,5 @@ public interface  IMentorService
     public Task<IList<Mentor>> GetAllAsync(PaginationParams @params);
     public Task<Mentor> GetByIdAsync (long mentorId);
     public Task<bool> UpdateAsync(long mentorId, MentorUpdateDto dto);
+    public Task<IList<Course>> GetMentorsCoursesAsync(long mentorId);
 }

@@ -126,6 +126,7 @@ public class CourseService : ICourseService
         {
             name = name.Replace("'", "''");
         }
+
         var intSearchedCourses = await _repository.CountSearchedCoursesNameAsync(name);
         if (intSearchedCourses == 0) throw new CourseNotFoundException();
 

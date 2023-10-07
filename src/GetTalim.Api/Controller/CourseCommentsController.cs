@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GetTalim.Api.Controller;
 
-[Route("api/coursecomments")]
+[Route("api/course-comments")]
 [ApiController]
 public class CourseCommentsController : ControllerBase
 {

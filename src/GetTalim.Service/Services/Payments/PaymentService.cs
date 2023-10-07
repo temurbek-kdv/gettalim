@@ -4,6 +4,7 @@ using GetTalim.Domain.Entities.Payments;
 using GetTalim.Domain.Exceptions.Payments;
 using GetTalim.Service.Common.Helpers;
 using GetTalim.Service.Dtos.Payment;
+using GetTalim.Service.Interfaces.Common;
 using GetTalim.Service.Interfaces.Payments;
 
 namespace GetTalim.Service.Services.Payments;
@@ -11,10 +12,12 @@ namespace GetTalim.Service.Services.Payments;
 public class PaymentService : IPaymentService
 {
     private readonly IPaymentRepository _repository;
+    private readonly IPaginatorService _paginator;
 
-    public PaymentService(IPaymentRepository repository)
+    public PaymentService(IPaymentRepository repository, IPaginatorService paginator)
     {
         this._repository = repository;   
+        _paginator = paginator;
     }
 
     public async Task<bool> CreateAsync(PaymentCreateDto dto)
@@ -45,12 +48,16 @@ public class PaymentService : IPaymentService
 
     public async Task<IList<Payment>> GetAllAsync(PaginationParams @params)
     {
+        var count = await _repository.CountAsync();
         var videos = await _repository.GetAllAsync(@params);
+        _paginator.Paginate(count, @params);
+
         return videos;
     }
 
-    public async Task<bool> UpdateAsync(long paymentId, PaymentCreateDto dto)
+    public async Task<bool> UpdateAsync(PaymentUpdateDto dto)
     {
+        var paymentId = dto.Id;
         var payment = await _repository.GetByIdAsync(paymentId);
         if (payment is null) throw new PaymentNotFoundException();
 
@@ -63,8 +70,10 @@ public class PaymentService : IPaymentService
         return dbResult > 0;
     }
 
-    public Task<long> CountAllAsync()
+    public async Task<long> CountAllAsync()
     {
-        throw new NotImplementedException();
+        var result  = await _repository.CountAsync();
+        
+        return result;
     }
 }

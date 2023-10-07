@@ -8,9 +8,25 @@ namespace GetTalim.DataAccess.Repositories.Payments;
 
 public class PaymentRepository : BaseRepository, IPaymentRepository
 {
-    public Task<long> CountAsync()
+    public async Task<long> CountAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT COUNT(*) FROM payment ;";
+
+            var result = await _connection.QuerySingleAsync<long>(query);
+            
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<int> CreateAsync(Payment entity)
@@ -18,7 +34,7 @@ public class PaymentRepository : BaseRepository, IPaymentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO payments(student_id, course_id, " +
+            string query = "INSERT INTO payment(student_id, course_id, " +
                 " is_paid, created_at, updated_at) VALUES " +
                 " ( @StudentId, @CourseId, @IsPaid, @CreatedAt, @UpdatedAt ); ";
 
@@ -40,7 +56,7 @@ public class PaymentRepository : BaseRepository, IPaymentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "DELETE FROM payments WHERE id = @Id ";
+            string query = "DELETE FROM payment WHERE id = @Id ";
 
             var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
@@ -60,7 +76,8 @@ public class PaymentRepository : BaseRepository, IPaymentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM payments order by id desc ";
+            string query = "SELECT * FROM payment ORDER BY id DESC " +
+                $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
 
             var result = (await _connection.QueryAsync<Payment>(query)).ToList();
             return result;
@@ -81,7 +98,7 @@ public class PaymentRepository : BaseRepository, IPaymentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM payments WHERE id = @Id ";
+            string query = "SELECT * FROM payment WHERE id = @Id ";
 
             var result = await _connection.QuerySingleAsync<Payment>(query, new { Id = id });
             return result;
@@ -101,7 +118,7 @@ public class PaymentRepository : BaseRepository, IPaymentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "UPDATE payments SET  student_id=@StudentId, " +
+            string query = "UPDATE payment SET  student_id=@StudentId, " +
                 " course_id=@CourseId, is_paid=@IsPaid, created_at=@CreatedAt, updated_at=@UpdatedAt " +
                 $" WHERE id = {id}; ";
 

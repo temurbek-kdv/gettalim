@@ -6,6 +6,7 @@ using GetTalim.DataAccess.Interfaces.CourseRequierments;
 using GetTalim.DataAccess.Interfaces.Courses;
 using GetTalim.DataAccess.Interfaces.CourseViewModels;
 using GetTalim.DataAccess.Interfaces.Mentors;
+using GetTalim.DataAccess.Interfaces.Payments;
 using GetTalim.DataAccess.Interfaces.Students;
 using GetTalim.DataAccess.Interfaces.Videos;
 using GetTalim.DataAccess.Repositories.Categories;
@@ -16,6 +17,7 @@ using GetTalim.DataAccess.Repositories.CourseRequierments;
 using GetTalim.DataAccess.Repositories.Courses;
 using GetTalim.DataAccess.Repositories.CourseViewModels;
 using GetTalim.DataAccess.Repositories.Mentors;
+using GetTalim.DataAccess.Repositories.Payments;
 using GetTalim.DataAccess.Repositories.Students;
 using GetTalim.DataAccess.Repositories.Videos;
 
@@ -35,5 +37,6 @@ public static class DataAccessConfiguration
         builder.Services.AddScoped<IVideoRepository, VideoRepository>();
         builder.Services.AddScoped<IStudentRepository, StudentRepository>();
         builder.Services.AddScoped<ICourseViewModelRepository, CourseViewModelRepository>();
+        builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
     }
 }

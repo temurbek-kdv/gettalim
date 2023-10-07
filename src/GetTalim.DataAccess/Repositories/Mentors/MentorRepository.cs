@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using GetTalim.DataAccess.Interfaces.Mentors;
 using GetTalim.DataAccess.Utils;
+using GetTalim.Domain.Entities.Courses;
 using GetTalim.Domain.Entities.Mentors;
 using static Dapper.SqlMapper;
 
@@ -88,6 +89,27 @@ public class MentorRepository : BaseRepository, IMentorRepository
         catch
         {
             return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<IList<Course>> GetMentorsCourses(long mentorId)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $" SELECT * FROM courses where mentor_id = {mentorId} ";
+
+            var result = await _connection.QueryAsync<Course>(query);
+
+            return result.ToList();
+        }
+        catch
+        {
+            return new List<Course>();
         }
         finally
         {

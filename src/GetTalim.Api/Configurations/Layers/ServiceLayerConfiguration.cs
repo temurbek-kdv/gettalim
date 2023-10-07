@@ -1,4 +1,5 @@
-﻿using GetTalim.Service.Interfaces.Categories;
+﻿using GetTalim.Service.Interfaces.Admin;
+using GetTalim.Service.Interfaces.Categories;
 using GetTalim.Service.Interfaces.Common;
 using GetTalim.Service.Interfaces.CourseBenefits;
 using GetTalim.Service.Interfaces.CourseComments;
@@ -8,8 +9,10 @@ using GetTalim.Service.Interfaces.Courses;
 using GetTalim.Service.Interfaces.CourseViewModels;
 using GetTalim.Service.Interfaces.Mentors;
 using GetTalim.Service.Interfaces.Notifications;
+using GetTalim.Service.Interfaces.Payments;
 using GetTalim.Service.Interfaces.Students;
 using GetTalim.Service.Interfaces.Videos;
+using GetTalim.Service.Services.Admin;
 using GetTalim.Service.Services.Categories;
 using GetTalim.Service.Services.Common;
 using GetTalim.Service.Services.CourseBenefits;
@@ -20,6 +23,7 @@ using GetTalim.Service.Services.Courses;
 using GetTalim.Service.Services.CourseViewModels;
 using GetTalim.Service.Services.Mentors;
 using GetTalim.Service.Services.Notifications;
+using GetTalim.Service.Services.Payments;
 using GetTalim.Service.Services.Students;
 using GetTalim.Service.Services.Videos;
 
@@ -44,6 +48,8 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<IIdentityService, IdentityService>();
         builder.Services.AddScoped<ICourseViewModelService, CourseViewModelService>();
         builder.Services.AddScoped<IPaginatorService, PaginatorService>();
-
+        builder.Services.AddScoped<IStudentService, StudentService>();
+        builder.Services.AddScoped<IStudentAdminService, StudentAdminService>();
+        builder.Services.AddScoped<IPaymentService, PaymentService>();
     }
 }

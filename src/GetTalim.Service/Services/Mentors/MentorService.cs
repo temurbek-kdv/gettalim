@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GetTalim.DataAccess.Interfaces.Mentors;
 using GetTalim.DataAccess.Utils;
+using GetTalim.Domain.Entities.Courses;
 using GetTalim.Domain.Entities.Mentors;
 using GetTalim.Domain.Exceptions.Mentors;
 using GetTalim.Service.Common.Helpers;
@@ -85,5 +86,13 @@ public class MentorService : IMentorService
         throw new NotImplementedException();
     }
 
+    public async Task<IList<Course>> GetMentorsCoursesAsync(long mentorId)
+    {
+        var mentor = await _repository.GetByIdAsync(mentorId);
+        if (mentor is null) throw new MentorNotFoundException() ;
 
+        var courses = await _repository.GetMentorsCourses(mentorId);
+       
+        return courses ;
+    }
 }

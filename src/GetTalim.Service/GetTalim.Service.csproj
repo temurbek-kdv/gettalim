@@ -14,7 +14,6 @@
     <Folder Include="Common\Attributes\" />
     <Folder Include="Common\Exceptions\" />
     <Folder Include="Common\Validations\" />
-    <Folder Include="Dtos\Payment\" />
   </ItemGroup>
 
 	<ItemGroup>

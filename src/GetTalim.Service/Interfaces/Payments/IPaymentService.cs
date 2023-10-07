@@ -11,5 +11,5 @@ public interface IPaymentService
     public Task<long> CountAllAsync();
     public Task<IList<Payment>> GetAllAsync(PaginationParams @params);
     public Task<Payment> GetByIdAsync (long paymentId);
-    public Task<bool> UpdateAsync(long paymentId, PaymentCreateDto dto);
+    public Task<bool> UpdateAsync(PaymentUpdateDto dto);
 }

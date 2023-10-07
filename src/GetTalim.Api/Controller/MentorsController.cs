@@ -23,19 +23,28 @@ public class MentorsController : ControllerBase
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
+
     [HttpGet("{mentorId}")]
     public async Task<IActionResult> GetByIdAsync(long mentorId)
         =>Ok(await _service.GetByIdAsync(mentorId));
+
+
+    [HttpGet("courses/{mentorId}")]
+    public async Task<IActionResult> GetMentorsCourses(long mentorId)
+        =>Ok(await _service.GetMentorsCoursesAsync(mentorId));
+
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] MentorCreateDto dto)
         =>Ok(await _service.CreateAsync(dto));
 
+
     [HttpPut("{mentorId}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateAsync(long mentorId, [FromForm] MentorUpdateDto dto)
         => Ok(await _service.UpdateAsync(mentorId,dto));
+
 
     [HttpDelete("{mentorId}")]
     [Authorize(Roles = "Admin")]
