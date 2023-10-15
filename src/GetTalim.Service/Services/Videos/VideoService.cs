@@ -1,6 +1,8 @@
-﻿using GetTalim.DataAccess.Interfaces.Videos;
+﻿using GetTalim.DataAccess.Interfaces.CourseModuls;
+using GetTalim.DataAccess.Interfaces.Videos;
 using GetTalim.DataAccess.Utils;
 using GetTalim.Domain.Entities.Videos;
+using GetTalim.Domain.Exceptions.Courses;
 using GetTalim.Domain.Exceptions.Videos;
 using GetTalim.Service.Common.Helpers;
 using GetTalim.Service.Dtos.Videos;
@@ -11,10 +13,12 @@ namespace GetTalim.Service.Services.Videos;
 public class VideoService : IVideoService
 {
     private readonly IVideoRepository _repository;
+    private readonly ICourseModulRepository _modulRepository;
 
-    public VideoService(IVideoRepository repository)
+    public VideoService(IVideoRepository repository, ICourseModulRepository modulRepository)
     {
-        this._repository = repository;
+        _repository = repository;
+        _modulRepository = modulRepository;
     }
   
 
@@ -70,5 +74,14 @@ public class VideoService : IVideoService
     public Task<long> CountAsync()
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<IList<Video>> GetVideoByModuleIdAsync(long moduleId)
+    {
+        var modul = await _modulRepository.GetByIdAsync(moduleId);
+        if (modul is null) throw new CourseModuleNotFoundException();
+
+        var videos = await _repository.GetVideoByModuleIdAsync(moduleId);
+        return videos;
     }
 }

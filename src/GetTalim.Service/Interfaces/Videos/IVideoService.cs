@@ -12,4 +12,5 @@ public interface IVideoService
     public Task<IList<Video>> GetAllAsync(PaginationParams @params);
     public Task<Video> GetByIdAsync(long videoId);
     public Task<bool> UpdateAsync(long videoId, VideoUpdateDto dto);
+    public Task<IList<Video>> GetVideoByModuleIdAsync(long moduleId);
 }

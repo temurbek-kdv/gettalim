@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using GetTalim.DataAccess.Interfaces.CourseComments;
 using GetTalim.DataAccess.Utils;
+using GetTalim.DataAccess.ViewModels;
 using GetTalim.Domain.Entities.Courses;
 
 
@@ -129,21 +130,25 @@ public class CourseCommentsRepository : BaseRepository, ICourseCommentsRepositor
         }
     }
 
-    public async Task<IList<CourseComment>> GetCourseComments(long id, PaginationParams @params)
+    public async Task<IList<CourseCommentViewModel>> GetCourseComments(long id, PaginationParams @params)
     {
         try
         {
             await  _connection.OpenAsync();
-            string query = "SELECT * FROM course_comments WHERE course_id = @Id " +
+            string query = @"SELECT course_comments.*, 
+                           CONCAT(students.first_name, ' ', students.last_name) AS full_name
+                    FROM course_comments
+                    INNER JOIN students ON course_comments.student_id = students.id
+                    WHERE course_comments.course_id =  @Id " +
                $" OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
 
-            var result = (await _connection.QueryAsync<CourseComment>(query, new { Id = id })).ToList();
+            var result = (await _connection.QueryAsync<CourseCommentViewModel>(query, new { Id = id })).ToList();
             
             return result;
         }
         catch
         {
-            return new List<CourseComment>();
+            return new List<CourseCommentViewModel>();
         }
         finally
         {

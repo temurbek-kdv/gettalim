@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using GetTalim.DataAccess.Interfaces.Payments;
 using GetTalim.DataAccess.Utils;
+using GetTalim.DataAccess.ViewModels;
 using GetTalim.Domain.Entities.Payments;
 using static Dapper.SqlMapper;
 
@@ -71,20 +72,28 @@ public class PaymentRepository : BaseRepository, IPaymentRepository
         }
     }
 
-    public async Task<IList<Payment>> GetAllAsync(PaginationParams @params)
+    public Task<IList<Payment>> GetAllAsync(PaginationParams @params)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IList<PaymentViewModel>> GetAllFullAsync(PaginationParams @params)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM payment ORDER BY id DESC " +
+            string query = @"SELECT payment.*, students.email AS student_email, courses.name AS course_name
+                                FROM payment
+                                INNER JOIN students ON payment.student_id = students.id
+                                INNER JOIN courses ON payment.course_id = courses.id " +
                 $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize} ;";
 
-            var result = (await _connection.QueryAsync<Payment>(query)).ToList();
+            var result = (await _connection.QueryAsync<PaymentViewModel>(query)).ToList();
             return result;
         }
         catch
         {
-            return new List<Payment>();
+            return new List<PaymentViewModel>();
         }
         finally
         {

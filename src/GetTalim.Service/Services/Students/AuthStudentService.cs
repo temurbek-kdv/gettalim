@@ -66,7 +66,10 @@ public class AuthStudentService : IAuthStudentService
             verificationDto.Attempt = 0;
             verificationDto.CreatedAt = TimeHelper.GetDateTime();
 
-            verificationDto.Code = CodeGenerator.GenerateRandomNumber();
+           
+            // verificationDto.Code = CodeGenerator.GenerateRandomNumber();
+            verificationDto.Code = 12345;
+
 
             if (_memoryCache.TryGetValue(VERIFY_REGISTER_CACHE_KEY + mail, out StudentVerificationDto oldDto))
             {
@@ -126,7 +129,7 @@ public class AuthStudentService : IAuthStudentService
         var student = new Student();
         student.FirstName = registroDto.FirstName;
         student.LastName = registroDto.LastName;
-        student.Email = registroDto.Email;
+        student.Email = registroDto.Email.ToLower();
         student.IsEmailConfirmed = true;
 
         var hasherResult = PasswordHasher.Hash(registroDto.Password);
@@ -141,7 +144,7 @@ public class AuthStudentService : IAuthStudentService
 
     public async Task<(bool Result, string Token)> LoginAsync(StudentLoginDto loginDto)
     {
-        var student = await _studentRepository.GetByEmailAsync(loginDto.Email);
+        var student = await _studentRepository.GetByEmailAsync(loginDto.Email.ToLower());
         if(student is null) throw new StudentNotFoundException();
 
         var hasherResult = PasswordHasher.Verify(loginDto.Password, student.PasswordHash, student.Salt);

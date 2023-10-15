@@ -1,5 +1,6 @@
 ﻿using GetTalim.DataAccess.Interfaces.Payments;
 using GetTalim.DataAccess.Utils;
+using GetTalim.DataAccess.ViewModels;
 using GetTalim.Domain.Entities.Payments;
 using GetTalim.Domain.Exceptions.Payments;
 using GetTalim.Service.Common.Helpers;
@@ -46,10 +47,10 @@ public class PaymentService : IPaymentService
         return result > 0;
     }
 
-    public async Task<IList<Payment>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<PaymentViewModel>> GetAllAsync(PaginationParams @params)
     {
         var count = await _repository.CountAsync();
-        var videos = await _repository.GetAllAsync(@params);
+        var videos = await _repository.GetAllFullAsync(@params);
         _paginator.Paginate(count, @params);
 
         return videos;
@@ -76,4 +77,6 @@ public class PaymentService : IPaymentService
         
         return result;
     }
+
+ 
 }

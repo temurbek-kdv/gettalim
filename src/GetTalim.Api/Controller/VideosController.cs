@@ -23,6 +23,11 @@ public class VideosController : ControllerBase
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPage)));
 
+    [HttpGet("modul/{moduleId}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult>GetVideosByModuleId(long moduleId)
+        => Ok(await _service.GetVideoByModuleIdAsync(moduleId));
+
     [HttpGet("{videoId}")]
     public async Task<IActionResult> GetByIdAsync(long videoId)
         => Ok(await _service.GetByIdAsync(videoId));

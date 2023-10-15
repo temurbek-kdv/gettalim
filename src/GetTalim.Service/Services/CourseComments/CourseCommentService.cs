@@ -1,5 +1,6 @@
 ﻿using GetTalim.DataAccess.Interfaces.CourseComments;
 using GetTalim.DataAccess.Utils;
+using GetTalim.DataAccess.ViewModels;
 using GetTalim.Domain.Entities.Courses;
 using GetTalim.Domain.Exceptions.Courses;
 using GetTalim.Service.Common.Helpers;
@@ -50,7 +51,7 @@ public class CourseCommentService : ICourseCommentService
     }
 
 
-    public async Task<IList<CourseComment>> GetCourseCommentsAsync(long id, PaginationParams @params)
+    public async Task<IList<CourseCommentViewModel>> GetCourseCommentsAsync(long id, PaginationParams @params)
     {
         var courseComment = await _repository.GetCourseComments(id, @params);
         if (courseComment.Count == 0) throw new CourseCommentNotFoundException();

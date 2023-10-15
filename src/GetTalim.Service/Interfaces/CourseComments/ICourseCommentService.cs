@@ -1,4 +1,5 @@
 ﻿using GetTalim.DataAccess.Utils;
+using GetTalim.DataAccess.ViewModels;
 using GetTalim.Domain.Entities.Courses;
 using GetTalim.Service.Dtos.CourseComments;
 
@@ -13,5 +14,5 @@ public interface ICourseCommentService
     public Task<IList<CourseComment>> GetAllAsync(PaginationParams @params);
     public Task<bool> UpdateAsync(long courseCommentId, CourseCommentCreateDto dto);
     public Task<long> CountAsync();
-    public Task<IList<CourseComment>> GetCourseCommentsAsync(long id, PaginationParams @params);
+    public Task<IList<CourseCommentViewModel>> GetCourseCommentsAsync(long id, PaginationParams @params);
 }
