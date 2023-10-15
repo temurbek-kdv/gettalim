@@ -72,9 +72,10 @@ public class CourseModulService : ICourseModulService
 
 
         var modules = await _repository.GetByCourseIdAsync(courseId);
-            ModulwithVideosViewModel modulwithVideosViewModel = new ModulwithVideosViewModel();
         foreach (var modul in modules)
         {
+            ModulwithVideosViewModel modulwithVideosViewModel = new ModulwithVideosViewModel();
+
             modulwithVideosViewModel.Name = modul.Name;
             modulwithVideosViewModel.CourseId = modul.CourseId;
             modulwithVideosViewModel.UpdatedAt = modul.UpdatedAt;
@@ -94,18 +95,21 @@ public class CourseModulService : ICourseModulService
         List<ModulVideosWithoutPathViewModel> listModul = new List<ModulVideosWithoutPathViewModel>();
         var modules = await _repository.GetByCourseIdAsync(courseId);
         
-        ModulVideosWithoutPathViewModel modulwithVideosViewModel = new ModulVideosWithoutPathViewModel();
 
         foreach (var modul in modules)
         {
+            ModulVideosWithoutPathViewModel modulwithVideosViewModel = new ModulVideosWithoutPathViewModel();
+            
             modulwithVideosViewModel.Name = modul.Name;
             modulwithVideosViewModel.CourseId = modul.CourseId;
             modulwithVideosViewModel.UpdatedAt = modul.UpdatedAt;
             modulwithVideosViewModel.CreatedAt = modul.CreatedAt;
             modulwithVideosViewModel.Id = modul.Id;
             var videos = await _videoRepository.GetVideoForCommonAsync(modul.Id);
+            
             if (videos is not null)
                 modulwithVideosViewModel.videos.AddRange(videos);
+
             listModul.Add(modulwithVideosViewModel);
         }
 

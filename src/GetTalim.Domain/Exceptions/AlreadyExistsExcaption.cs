@@ -2,8 +2,8 @@
 
 namespace GetTalim.Domain.Exceptions;
 
-public class AlreadyExistsExcaption :Exception
+public class AlreadyExistsExcaption : ClientException
 {
-    public HttpStatusCode StatusCode { get; } = HttpStatusCode.Conflict;
-    public string TitleMessage { get; protected set; } = string.Empty;
+    public override HttpStatusCode StatusCode { get; } = HttpStatusCode.Conflict;
+    public override string TitleMessage { get; protected set; } = string.Empty;
 }

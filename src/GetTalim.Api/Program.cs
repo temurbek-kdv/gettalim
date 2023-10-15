@@ -1,7 +1,5 @@
-using GetTalim.Api.Configurations;
 using GetTalim.Api.Configurations.Layers;
 using GetTalim.Api.Middlewares;
-using GetTalim.WebApi.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
