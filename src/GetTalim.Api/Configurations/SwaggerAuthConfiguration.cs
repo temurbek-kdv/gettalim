@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace GetTalim.WebApi.Configurations;
+namespace GetTalim.Api.Configurations;
 
 public static class SwaggerAuthConfiguration
 {

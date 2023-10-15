@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  webapp:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: gettalim-platform-container
+    image: gettalim-platform-image:latest
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 4090:80
+      - 4343:443
+    
