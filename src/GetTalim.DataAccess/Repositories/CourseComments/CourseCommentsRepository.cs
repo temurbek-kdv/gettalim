@@ -136,7 +136,8 @@ public class CourseCommentsRepository : BaseRepository, ICourseCommentsRepositor
         {
             await  _connection.OpenAsync();
             string query = @"SELECT course_comments.*, 
-                           CONCAT(students.first_name, ' ', students.last_name) AS full_name
+                           CONCAT(students.first_name, ' ', students.last_name) AS full_name, 
+                            students.image_path
                     FROM course_comments
                     INNER JOIN students ON course_comments.student_id = students.id
                     WHERE course_comments.course_id =  @Id " +
