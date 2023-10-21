@@ -30,11 +30,12 @@ public class CourseViewModelService : ICourseViewModelService
         var course = await _courseRepository.GetByIdAsync(Id);
         var benefits = await _courseBenefit.GetCourcseBenefitsAsync(Id);
         var requirments = await _courseRequierment.GetCourcseRequirmentsAsync(Id);
-        var mentor = await _mentorRepository.GetByIdAsync(Id);
+        var mentor = await _mentorRepository.GetByIdAsync(course.MentorId);
+
 
         CourseViewModel model = new();
         model.Id = Id;
-        model.Name = course.Name!;
+        model.Name = course.Name;
         model.Description = course.Description;
         model.Information = course.Information;
         model.Lessons = course.Lessons;
@@ -45,7 +46,7 @@ public class CourseViewModelService : ICourseViewModelService
         model.Price = course.Price;
         model.DiscountPrice = course.DiscountPrice;
         model.MentorId = course.MentorId;
-        model.Mentor = mentor.FirstName! + " "+mentor.LastName!;
+        model.Mentor = mentor.FirstName + " "+mentor.LastName;
         model.CategoryId = course.CategoryId;
         model.CreatedAt = course.CreatedAt;
         model.UpdatedAt = course.UpdatedAt; 

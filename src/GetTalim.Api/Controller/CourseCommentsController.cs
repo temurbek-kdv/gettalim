@@ -50,6 +50,7 @@ public class CourseCommentsController : ControllerBase
 
     [HttpDelete("{commentId}")]
     [Authorize(Roles = "Student")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long commentId)
         => Ok(await _service.DeleteAsync(commentId));
 
