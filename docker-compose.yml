@@ -28,7 +28,7 @@ services:
     image: gettalim-database-image
     restart: always
     ports:
-      -5433:5432
+      - 5433:5432
     networks:
       - db_bridge
 
