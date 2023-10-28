@@ -10,7 +10,7 @@ APIs :      [ http://64.227.42.134:3030/swagger/index.html ]
 
 
 student registration
-mail default code : 1234 (check your email spam section if you can't find message)
+mail default code : 12345 (check your email spam section if you can't find message)
 
 Admin [ http://64.227.42.134:3030/api/StudentAuth/login ]
 login : wo.temurbek@gmail.com
